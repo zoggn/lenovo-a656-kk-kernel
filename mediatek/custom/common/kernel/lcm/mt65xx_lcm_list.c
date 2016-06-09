@@ -16,7 +16,10 @@
 extern LCM_DRIVER tianma_otm9605a_lcm_drv;
 extern LCM_DRIVER tianma_otm9608a_lcm_drv;
 extern LCM_DRIVER truly_nt35516_lcm_drv;
-
+extern LCM_DRIVER otm8018b_dsi_vdo_truly_lcm_drv;
+extern LCM_DRIVER otm8018b_dsi_vdo_lcm_drv;
+extern LCM_DRIVER otm8018b_dsi_vdo_lcsh72_lcm_drv;
+extern LCM_DRIVER otm8018b_dsi_vdo_trust_lcm_drv;
 LCM_DRIVER* lcm_driver_list[] = 
 { 
 #if defined(OTM9605A_QHD_TIANMA)
@@ -25,8 +28,20 @@ LCM_DRIVER* lcm_driver_list[] =
 #if defined(OTM9608A_QHD_TIANMA)
 	&tianma_otm9608a_lcm_drv,
 #endif
+#if defined(OTM8018B_DSI_VDO)
+	&otm8018b_dsi_vdo_lcm_drv,
+#endif
+#if defined(OTM8018B_DSI_VDO_TRULY)
+	&otm8018b_dsi_vdo_truly_lcm_drv,
+#endif
 #if defined(NT35516_QHD_TRULY)
 	&truly_nt35516_lcm_drv,
+#endif
+#if defined(OTM8018B_DSI_VDO_DJN)
+	&otm8018b_dsi_vdo_lcsh72_lcm_drv,
+#endif
+        #if defined(OTM8018B_DSI_VDO_TRUST)
+	&otm8018b_dsi_vdo_trust_lcm_drv,
 #endif
 };
 

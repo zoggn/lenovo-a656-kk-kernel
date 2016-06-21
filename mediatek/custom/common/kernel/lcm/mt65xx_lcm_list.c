@@ -20,6 +20,10 @@ extern LCM_DRIVER otm8018b_dsi_vdo_truly_lcm_drv;
 extern LCM_DRIVER otm8018b_dsi_vdo_lcm_drv;
 extern LCM_DRIVER otm8018b_dsi_vdo_lcsh72_lcm_drv;
 extern LCM_DRIVER otm8018b_dsi_vdo_trust_lcm_drv;
+extern LCM_DRIVER otm8018b_hongtao_HT45030A_V0_CPT_dsi_vdo_2_fwvga;
+extern LCM_DRIVER otm8018b_dsi_lcm_drv;
+extern LCM_DRIVER otm8018b_dsi_vdo_djn_md215_lcm_drv;
+extern LCM_DRIVER otm8009a_fwvga_dsi_cmd_tianma_lcm_drv;
 LCM_DRIVER* lcm_driver_list[] = 
 { 
 #if defined(OTM9605A_QHD_TIANMA)
@@ -42,6 +46,21 @@ LCM_DRIVER* lcm_driver_list[] =
 #endif
         #if defined(OTM8018B_DSI_VDO_TRUST)
 	&otm8018b_dsi_vdo_trust_lcm_drv,
+#endif
+#if defined(OTM8018B_HONGTAO_HT45030A_V0_CPT_DSI_CDO_2_FVWGA)
+	&otm8018b_hongtao_HT45030A_V0_CPT_dsi_vdo_2_fwvga,
+#endif
+#if defined(OTM8018B_HSD53_JQ)
+	&otm8018b_dsi_lcm_drv,
+#endif
+#if defined(OTM8018B_DSI_VDO_DJN_MD215)
+	&otm8018b_dsi_vdo_djn_md215_lcm_drv,
+#endif
+#if defined(OTM8009A_FWVGA_DSI_CMD_TIANMA)
+	&otm8009a_fwvga_dsi_cmd_tianma_lcm_drv,
+#endif
+#if defined(OTM8018B_DSI_VDO_TIANMA)
+	&otm8018b_dsi_vdo_lcsh72_lcm_drv,
 #endif
 };
 

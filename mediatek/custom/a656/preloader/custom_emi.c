@@ -16,7 +16,7 @@
  * -------
  *  EMI auto generator V0.01
  *
- *   Memory Device database last modified on 2015/12/11
+ *   Memory Device database last modified on 2016/6/6
  *
  *============================================================================
  *             HISTORY

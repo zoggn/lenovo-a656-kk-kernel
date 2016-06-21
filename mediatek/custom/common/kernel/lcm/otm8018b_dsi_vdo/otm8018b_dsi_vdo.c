@@ -30,8 +30,8 @@
 #define FRAME_WIDTH  										(480)
 #define FRAME_HEIGHT 										(854)
 
-#define REGFLAG_DELAY             							0xFE
-#define REGFLAG_END_OF_TABLE      							0xFFF   // END OF REGISTERS MARKER
+#define REGFLAG_DELAY             							0XFD
+#define REGFLAG_END_OF_TABLE      							0xFE   // END OF REGISTERS MARKER
 
 #define LCM_ID_OTM8018B	0x8009
 
@@ -78,7 +78,142 @@ static LCM_UTIL_FUNCS lcm_util = {0};
 };
 
 
-static struct LCM_setting_table lcm_initialization_setting[] = {0xd1, 2497806592, {0x00, 0x00, 0x00, 0xff, 0x42, 0x03, 0x02, 0x04, 0x2a, 0xe3, 0x81, 0x00, 0x00, 0x00, 0x00, 0x98, 0x81, 0xe4, 0x81, 0x00, 0x00, 0x00, 0x01, 0x48, 0x83, 0xe3, 0x81, 0x1c, 0x86, 0xe3, 0x81, 0x02, 0x00, 0x00, 0x00, 0x28, 0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0xfd, 0x14, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x, 0x, 0x, 0x, 0x, 0x, 0x, 0x}}
+static struct LCM_setting_table lcm_initialization_setting[] = {
+	
+	/*
+	Note :
+
+	Data ID will depends on the following rule.
+	
+		count of parameters > 1	=> Data ID = 0x39
+		count of parameters = 1	=> Data ID = 0x15
+		count of parameters = 0	=> Data ID = 0x05
+
+	Structure Format :
+
+	{DCS command, count of parameters, {parameter list}}
+	{REGFLAG_DELAY, milliseconds of time, {}},
+
+	...
+
+	Setting ending by predefined flag
+	
+	{REGFLAG_END_OF_TABLE, 0x00, {}}
+	*/
+
+
+{0X0, 1, {0X00}},
+{0XFF, 3, {0X80, 0X09, 0X01}},
+{0X0, 1, {0X80}},
+{0XFF, 2, {0X80, 0X09}},
+{0X0, 1, {0X03}},
+{0XFF, 1, {0X01}},
+{0X0, 1, {0XB4}},
+{0XC0, 1, {0X50}},
+{0X0, 1, {0X89}},
+{0XC4, 1, {0X08}},
+{0X0, 1, {0X80}},
+{0XC4, 1, {0X30}},
+{REGFLAG_DELAY, 20, {}},
+{0X0, 1, {0X8A}},
+{0XC4, 1, {0X40}},
+{REGFLAG_DELAY, 20, {}},
+{0X0, 1, {0X82}},
+{0XC5, 1, {0X83}},
+{0X0, 1, {0X90}},
+{0XC5, 2, {0X96, 0X76}},
+{0X0, 1, {0X00}},
+{0XD8, 2, {0X6F, 0X6F}},
+{0X0, 1, {0X00}},
+{0XD9, 1, {0X41}},
+{0X0, 1, {0X81}},
+{0XC1, 1, {0X66}},
+{0X0, 1, {0X81}},
+{0XC4, 1, {0X83}},
+{0X0, 1, {0X92}},
+{0XC5, 1, {0X01}},
+{0X0, 1, {0XB1}},
+{0XC5, 1, {0XA9}},
+{0X0, 1, {0X90}},
+{0XB3, 1, {0X02}},
+{0X0, 1, {0X92}},
+{0XB3, 1, {0X45}},
+{0X0, 1, {0X80}},
+{0XC0, 9, {0X00, 0X58, 0X00, 0X15, 0X15, 0X00, 0X58, 0X15, 0X15}},
+{0X0, 1, {0X90}},
+{0XC0, 6, {0X00, 0X44, 0X00, 0X00, 0X00, 0X03}},
+{0X0, 1, {0XA6}},
+{0XC1, 3, {0X00, 0X00, 0X00}},
+{0X0, 1, {0X80}},
+{0XCE, 12, {0X8A, 0X03, 0X00, 0X89, 0X03, 0X00, 0X88, 0X03, 0X00, 0X87, 0X03, 0X00}},
+{0X0, 1, {0X90}},
+{0XCE, 14, {0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00}},
+{0X0, 1, {0XA0}},
+{0XCE, 14, {0X38, 0X06, 0X03, 0X55, 0X00, 0X00, 0X00, 0X38, 0X05, 0X03, 0X56, 0X00, 0X00, 0X00}},
+{0X0, 1, {0XB0}},
+{0XCE, 14, {0X38, 0X04, 0X03, 0X57, 0X00, 0X00, 0X00, 0X38, 0X03, 0X03, 0X58, 0X00, 0X00, 0X00}},
+{0X0, 1, {0XC0}},
+{0XCE, 14, {0X38, 0X02, 0X03, 0X59, 0X00, 0X00, 0X00, 0X38, 0X01, 0X03, 0X5A, 0X00, 0X00, 0X00}},
+{0X0, 1, {0XD0}},
+{0XCE, 14, {0X38, 0X00, 0X03, 0X53, 0X00, 0X00, 0X00, 0X30, 0X00, 0X03, 0X54, 0X00, 0X00, 0X00}},
+{0X0, 1, {0X80}},
+{0XCF, 14, {0XF0, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0XF0, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00}},
+{0X0, 1, {0X90}},
+{0XCF, 14, {0XF0, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0XF0, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00}},
+{0X0, 1, {0XA0}},
+{0XCF, 14, {0XF0, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0XF0, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00}},
+{0X0, 1, {0XB0}},
+{0XCF, 14, {0XF0, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0XF0, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00}},
+{0X0, 1, {0XC0}},
+{0XCF, 10, {0X02, 0X02, 0X20, 0X20, 0X00, 0X00, 0X01, 0X00, 0X10, 0X00}},
+{0X0, 1, {0X80}},
+{0XCB, 10, {0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00}},
+{0X0, 1, {0X90}},
+{0XCB, 15, {0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00}},
+{0X0, 1, {0XA0}},
+{0XCB, 15, {0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00}},
+{0X0, 1, {0XB0}},
+{0XCB, 10, {0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00}},
+{0X0, 1, {0XC0}},
+{0XCB, 15, {0X04, 0X04, 0X00, 0X00, 0X04, 0X04, 0X04, 0X04, 0X04, 0X04, 0X00, 0X00, 0X00, 0X00, 0X00}},
+{0X0, 1, {0XD0}},
+{0XCB, 15, {0X00, 0X00, 0X00, 0X00, 0X00, 0X04, 0X04, 0X00, 0X00, 0X04, 0X04, 0X04, 0X04, 0X04, 0X04}},
+{0X0, 1, {0XE0}},
+{0XCB, 10, {0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00}},
+{0X0, 1, {0XF0}},
+{0XCB, 10, {0XFF, 0XFF, 0XFF, 0XFF, 0XFF, 0XFF, 0XFF, 0XFF, 0XFF, 0XFF}},
+{0X0, 1, {0X80}},
+{0XCC, 10, {0X26, 0X25, 0X00, 0X00, 0X0C, 0X0A, 0X10, 0X0E, 0X02, 0X04}},
+{0X0, 1, {0X90}},
+{0XCC, 15, {0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X26, 0X25, 0X00, 0X00, 0X0B}},
+{0X0, 1, {0XA0}},
+{0XCC, 15, {0X09, 0X0F, 0X0D, 0X01, 0X03, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00}},
+{0X0, 1, {0XB0}},
+{0XCC, 10, {0X25, 0X26, 0X00, 0X00, 0X0B, 0X0D, 0X0F, 0X09, 0X01, 0X03}},
+{0X0, 1, {0XC0}},
+{0XCC, 15, {0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X25, 0X26, 0X00, 0X00, 0X0C}},
+{0X0, 1, {0XD0}},
+{0XCC, 15, {0X0E, 0X10, 0X0A, 0X02, 0X04, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00, 0X00}},
+{0X0, 1, {0X00}},
+{0XE1, 16, {0X00, 0X1C, 0X20, 0X0E, 0X05, 0X11, 0X0B, 0X0A, 0X03, 0X07, 0X0A, 0X07, 0X0E, 0X10, 0X09, 0X00}},
+{0X0, 1, {0X00}},
+{0XE2, 16, {0X00, 0X1C, 0X20, 0X0E, 0X05, 0X11, 0X0B, 0X0A, 0X03, 0X07, 0X0A, 0X07, 0X0E, 0X10, 0X09, 0X00}},
+{0X0, 1, {0X00}},
+{0XEC, 33, {0X40, 0X44, 0X44, 0X44, 0X43, 0X43, 0X44, 0X44, 0X43, 0X44, 0X44, 0X44, 0X44, 0X44, 0X44, 0X44, 0X44, 0X44, 0X44, 0X44, 0X44, 0X44, 0X44, 0X44, 0X44, 0X44, 0X44, 0X44, 0X44, 0X44, 0X44, 0X44, 0X04}},
+{0X0, 1, {0X00}},
+{0XED, 33, {0X40, 0X44, 0X44, 0X44, 0X44, 0X44, 0X44, 0X44, 0X44, 0X44, 0X44, 0X44, 0X44, 0X44, 0X44, 0X44, 0X44, 0X44, 0X44, 0X44, 0X44, 0X44, 0X44, 0X44, 0X44, 0X44, 0X44, 0X44, 0X44, 0X44, 0X44, 0X44, 0X04}},
+{0X0, 1, {0X00}},
+{0XEE, 33, {0X40, 0X44, 0X44, 0X44, 0X44, 0X45, 0X45, 0X44, 0X44, 0X44, 0X45, 0X44, 0X44, 0X44, 0X44, 0X44, 0X45, 0X44, 0X44, 0X44, 0X45, 0X44, 0X45, 0X45, 0X45, 0X44, 0X44, 0X44, 0X44, 0X43, 0X43, 0X44, 0X04}},
+{0X35, 1, {0X00}},
+{REGFLAG_DELAY, 10, {}},
+{0X11, 1, {0X00}},
+{REGFLAG_DELAY, 150, {}},
+{0X29, 1, {0X00}},
+{REGFLAG_DELAY, 100, {}},
+{0X2C, 1, {0X00}},
+{REGFLAG_END_OF_TABLE, 0, {}}
+
+};
 
 
 
@@ -428,13 +563,13 @@ static unsigned int lcm_compare_id(void)
 
 LCM_DRIVER otm8018b_dsi_vdo_lcm_drv = 
 {
-    .name			= "otm8018b_fwvga_dsi_vdo_boe",
+    .name			= "otm8018b_dsi_vdo_tianma",
 	.set_util_funcs = lcm_set_util_funcs,
 	.get_params     = lcm_get_params,
 	.init           = lcm_init,
 	.suspend        = lcm_suspend,
 	.resume         = lcm_resume,
-	.compare_id    = lcm_compare_id,	
+//      compare_id    = lcm_compare_id,	
 	#ifndef BUILD_LK
 //	.esd_check = lcm_esd_check,
 //	.esd_recover = lcm_init,

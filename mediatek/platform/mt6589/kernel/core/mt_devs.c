@@ -25,8 +25,7 @@
 #include <linux/version.h>
 #include "mach/mtk_ccci_helper.h"
 #include <mach/mtk_memcfg.h>
-#include "mtk_ttsp.c"
-#include <linux/hardware_self_adapt.h>
+
 
 #define SERIALNO_LEN 32
 static char serial_number[SERIALNO_LEN];
@@ -77,7 +76,7 @@ struct platform_device mt_device_usb = {
 };
 
 /*=======================================================================*/
-/* MT6589 USB11 Host                                                     */
+/* MT6589 USB11 Host                      */
 /*=======================================================================*/
 #if defined(CONFIG_MTK_USBFSH)
 static u64 usb11_dmamask = DMA_BIT_MASK(32);
@@ -88,8 +87,8 @@ static struct musbfsh_hdrc_config musbfsh_config_mt65xx = {
 	.dyn_fifo       = true,
 	.soft_con       = true,
 	.dma            = true,
-	.num_eps        = 6,
-	.dma_channels   = 4,
+	.num_eps        = 16,
+	.dma_channels   = 8,
 };
 static struct musbfsh_hdrc_platform_data usb_data_mt65xx = {
 	.mode           = 1,
@@ -397,7 +396,7 @@ static struct amba_device uart1_device =
 #endif
 
 /*=======================================================================*/
-/* MT6589 MSDC Hosts                                                     */
+/* MT6589 MSDC Hosts                                                       */
 /*=======================================================================*/
 #if defined(CFG_DEV_MSDC0)
 static struct resource mt_resource_msdc0[] = {
@@ -658,7 +657,7 @@ static struct platform_device kpd_pdev = {
 
 #ifdef CONFIG_RFKILL
 /*=======================================================================*/
-/* MT6589 RFKill module (BT and WLAN)                                    */
+/* MT6589 RFKill module (BT and WLAN)                                             */
 /*=======================================================================*/
 /* MT66xx RFKill BT */
 struct platform_device mt_rfkill_device = {
@@ -668,7 +667,7 @@ struct platform_device mt_rfkill_device = {
 #endif
 
 /*=======================================================================*/
-/* HID Keyboard  add by zhangsg                                          */
+/* HID Keyboard  add by zhangsg                                                 */
 /*=======================================================================*/
 
 #if defined(CONFIG_KEYBOARD_HID)
@@ -698,7 +697,7 @@ static struct platform_device mtk_tpd_dev = {
 };
 
 /*=======================================================================*/
-/* MT6575 ofn                                                            */
+/* MT6575 ofn                                                           */
 /*=======================================================================*/
 #if defined(CUSTOM_KERNEL_OFN)
 static struct platform_device ofn_driver =
@@ -734,7 +733,7 @@ struct platform_device mtk_therm_mon_pdev = {
 #endif
 
 /*=======================================================================*/
-/* MT6589 PTP module                                                     */
+/* MT6589 PTP module                                      */
 /*=======================================================================*/
 struct platform_device ptp_pdev = {
     .name = "mtk-ptp",
@@ -742,7 +741,7 @@ struct platform_device ptp_pdev = {
 };
 
 /*=======================================================================*/
-/* MT6589 SPM-MCDI module                                                */
+/* MT6589 SPM-MCDI module                                      */
 /*=======================================================================*/
 struct platform_device spm_mcdi_pdev = {
     .name = "mtk-spm-mcdi",
@@ -750,7 +749,7 @@ struct platform_device spm_mcdi_pdev = {
 };
 
 /*=======================================================================*/
-/* MT6589 Golden Setting module                                          */
+/* MT6589 Golden Setting module                                      */
 /*=======================================================================*/
 struct platform_device golden_setting_pdev = {
     .name = "mtk-golden-setting",
@@ -758,7 +757,7 @@ struct platform_device golden_setting_pdev = {
 };
 
 /*=======================================================================*/
-/* MT6589 USIF-DUMCHAR                                                   */
+/* MT6589 USIF-DUMCHAR                                                          */
 /*=======================================================================*/
 
 static struct platform_device dummychar_device =
@@ -816,7 +815,7 @@ static struct platform_device mtk_nand_dev = {
 #endif
 
 /*=======================================================================*/
-/* Audio                                                                 */
+/* Audio                                                 */
 /*=======================================================================*/
 static u64        AudDrv_dmamask      = 0xffffffffUL;
 static struct platform_device AudDrv_device = {
@@ -829,7 +828,7 @@ static struct platform_device AudDrv_device = {
 };
 
 /*=======================================================================*/
-/* MTK I2C                                                               */
+/* MTK I2C                                                            */
 /*=======================================================================*/
 
 static struct resource mt_resource_i2c0[] = {
@@ -988,7 +987,7 @@ static struct platform_device mtk_m4u_dev = {
 
 
 /*=======================================================================*/
-/* MT6573 GPS module                                                     */
+/* MT6573 GPS module                                                    */
 /*=======================================================================*/
 /* MT3326 GPS */
 #ifdef CONFIG_MTK_GPS
@@ -996,7 +995,7 @@ struct platform_device mt3326_device_gps = {
 	.name	       = "mt3326-gps",
 	.id            = -1,
 	.dev = {
-    .platform_data = &mt3326_gps_hw,
+        .platform_data = &mt3326_gps_hw,
     },
 };
 #endif
@@ -1043,12 +1042,17 @@ static struct platform_device camera_sysram_dev = {
 };
 
 /*=======================================================================*/
+/*=======================================================================*/
 /* Commandline filter                                                    */
 /* This function is used to filter undesired command passed from LK      */
 /*=======================================================================*/
 static void cmdline_filter(struct tag *cmdline_tag, char *default_cmdline)
 {
-	const char *undesired_cmds[] = { "console=", "root=", };
+	const char *undesired_cmds[] = {
+	                             "console=",
+                                     "root=",
+			             };
+
 	int i;
 	int ck_f = 0;
 	char *cs,*ce;
@@ -1087,7 +1091,7 @@ static void cmdline_filter(struct tag *cmdline_tag, char *default_cmdline)
 	}
 }
 /*=======================================================================*/
-/* Parse the framebuffer info						                     */
+/* Parse the framebuffer info						 */
 /*=======================================================================*/
 static int __init parse_tag_videofb_fixup(const struct tag *tags)
 {
@@ -1142,7 +1146,7 @@ void mt_fixup(struct tag *tags, char **cmdline, struct meminfo *mi)
         if (tags->hdr.tag == ATAG_MEM) {
 	    bl_mem_sz += tags->u.mem.size;
 
-             /*
+	    /*
              * Modify the memory tag to limit available memory to
              * CONFIG_MAX_DRAM_SIZE_SUPPORT
              */
@@ -1297,11 +1301,25 @@ struct platform_device sensor_msensor = {
 	.id            = -1,
 };
 
+struct platform_device sensor_orientation = {
+	.name	       = "orientation",
+	.id            = -1,
+};
+
 struct platform_device sensor_alsps = {
 	.name	       = "als_ps",
 	.id            = -1,
 };
 
+struct platform_device sensor_gyroscope = {
+	.name	       = "gyroscope",
+	.id            = -1,
+};
+
+struct platform_device sensor_barometer = {
+	.name	       = "barometer",
+	.id            = -1,
+};
 /* hwmon sensor */
 struct platform_device hwmon_sensor = {
 	.name	       = "hwmsensor",
@@ -1361,7 +1379,7 @@ static struct platform_device mt_eis_dev = {
 #endif
 //
 /*=======================================================================*/
-/* Image sensor                                                          */
+/* Image sensor                                                        */
 /*=======================================================================*/
 static struct platform_device sensor_dev = {
 	.name		  = "image_sensor",
@@ -1374,12 +1392,44 @@ static struct platform_device sensor_dev_bus2 = {
 
 //
 /*=======================================================================*/
-/* Lens actuator                                                         */
+/* Lens actuator                                                        */
 /*=======================================================================*/
 static struct platform_device actuator_dev = {
 	.name		  = "lens_actuator",
 	.id		  = -1,
 };
+
+static struct platform_device actuator_dev0 = {
+	.name		  = "lens_actuator0",
+	.id		  = -1,
+};
+
+static struct platform_device actuator_dev1 = {
+	.name		  = "lens_actuator1",
+	.id		  = -1,
+};
+
+static struct platform_device actuator_dev2 = {
+	.name		  = "lens_actuator2",
+	.id		  = -1,
+};
+
+static struct platform_device actuator_dev3 = {
+	.name		  = "lens_actuator3",
+	.id		  = -1,
+};
+
+static struct platform_device actuator_dev4 = {
+	.name		  = "lens_actuator4",
+	.id		  = -1,
+};
+
+static struct platform_device actuator_dev5 = {
+	.name		  = "lens_actuator5",
+	.id		  = -1,
+};
+
+
 /*=======================================================================*/
 /* MT6575 jogball                                                        */
 /*=======================================================================*/
@@ -1391,7 +1441,7 @@ static struct platform_device jbd_pdev = {
 #endif
 
 /*=======================================================================*/
-/* MT6589 Pipe Manager                                                   */
+/* MT6589 Pipe Manager                                                         */
 /*=======================================================================*/
 static struct platform_device camera_pipemgr_dev = {
 	.name	= "camera-pipemgr",
@@ -1403,7 +1453,7 @@ static struct platform_device mt65xx_leds_device = {
 	.id = -1
 };
 /*=======================================================================*/
-/* NFC                                                                   */
+/* NFC                                                                          */
 /*=======================================================================*/
 static struct platform_device mtk_nfc_6605_dev = {
     .name   = "mt6605",
@@ -1411,7 +1461,7 @@ static struct platform_device mtk_nfc_6605_dev = {
 };
 
 /*=======================================================================*/
-/* Sim switch driver                                                     */
+/* Sim switch driver                                                         */
 /*=======================================================================*/
 #if defined (CUSTOM_KERNEL_SSW)
 static struct platform_device ssw_device = {
@@ -1419,83 +1469,8 @@ static struct platform_device ssw_device = {
 	.id = -1};
 #endif
 
-#define HW_HAVE_TP_THREAD
-
-#if defined(HW_HAVE_TP_THREAD)
-/******************************************************************************
-Function:       // HW_TP_Init
-  Description:    // TP init function
-  Input:          //product type
-  Output:         // init success or fail
-  Return:         //0 or 1
-  Others:
-******************************************************************************/
-int HW_TP_Init(hw_product_type board_id)
-{
-    int retval = 0;
-
-    printk("-- HW_TP_Init.Begin --\n");
-    
-	cyttsp4_register_device(&cyttsp4_mt_novirtualkey_info);
-	cyttsp4_register_core_device(&cyttsp4_G610_core_info);
-	cyttsp4_register_device(&cyttsp4_btn_info);
-
-    retval = platform_device_register(&mtk_tpd_dev);
-
-    printk("-- HW_TP_Init.End --\n");
-
-    return retval;
-}
-
-/******************************************************************************
-Function:       // hw_thread_register_tp 
-  Description:    // TP init function thread
-  Input:          
-  Output:         // init success or fail
-  Return:         //0 or 1
-  Others:
-******************************************************************************/
-int hw_thread_register_tp(void *x)
-{
-    #define TP_THREAD_SLEEP_TIMES (1500)
-
-    hw_product_type board_id;
-    board_id = get_hardware_product_version();
-
-    msleep(TP_THREAD_SLEEP_TIMES);
-
-    return HW_TP_Init(board_id);
-}
-
-/******************************************************************************
-Function:       // hw_register_tp
-  Description:    // TP init function
-  Input:          //
-  Output:         // init success or fail
-  Return:         //0 or 1
-  Others:
-******************************************************************************/
-int hw_register_tp(void)
-{
-    hw_product_type board_id;
-    board_id = get_hardware_product_version(); 
-
-    if ((NORMAL_BOOT == g_boot_mode) || (ALARM_BOOT == g_boot_mode))
-    {
-        kthread_run(hw_thread_register_tp, NULL, "hw_thread_register_TP");
-        return 0;
-    }
-    else
-    {
-        printk("Tsh hw_register_tp not need thread.\n");
-        return HW_TP_Init(board_id);
-    }
-}
-#endif
-
-
 /*=======================================================================*/
-/* battery driver                                                        */
+/* battery driver                                                         */
 /*=======================================================================*/
 struct platform_device battery_device = {
     .name   = "battery",
@@ -1534,12 +1509,7 @@ __init int mt6589_board_init(void)
 #else
 		key = 0;
 #endif
-		if (key != 0)
-			get_serial(key, get_chip_code(), serial_number);
-		else
-			memcpy(serial_number, "MANSI23G9N57G610", 16);
-
-		retval = kobject_init_and_add(&sn_kobj, &sn_ktype, NULL, "sys_info");
+		memcpy(serial_number, "iOCEAN X7", 9);
 
 		if (retval < 0)
 			printk("[%s] fail to add kobject\n", "sys_info");
@@ -1735,6 +1705,11 @@ __init int mt6589_board_init(void)
     platform_device_register(&mt_spi_device);
 #endif
 
+
+
+
+
+
 #if defined(MTK_TVOUT_SUPPORT)
     retval = platform_device_register(&mt6575_TVOUT_dev);
 	printk("register TV-out device\n");
@@ -1817,18 +1792,35 @@ __init int mt6589_board_init(void)
 		return retval;
 #endif
 
+#if defined(CUSTOM_KERNEL_MAGNETOMETER)
+	retval = platform_device_register(&sensor_msensor);
+		printk("sensor_msensor device!");
+	if (retval != 0)
+		return retval;
+
+	retval = platform_device_register(&sensor_orientation);
+		printk("sensor_osensor device!");
+	if (retval != 0)
+		return retval;
+
 #endif
 
-/* Register core and devices */
-#if defined(HW_HAVE_TP_THREAD)
-#else
-/* Register core and devices */
-	hw_product_type board_id;
-	board_id=get_hardware_product_version();
-	cyttsp4_register_device(&cyttsp4_mt_novirtualkey_info);
-	cyttsp4_register_core_device(&cyttsp4_G610_core_info);
-	cyttsp4_register_device(&cyttsp4_btn_info);
+#if defined(CUSTOM_KERNEL_GYROSCOPE)
+	retval = platform_device_register(&sensor_gyroscope);
+		printk("sensor_gyroscope device!");
+	if (retval != 0)
+		return retval;
 #endif
+
+#if defined(CUSTOM_KERNEL_BAROMETER)
+	retval = platform_device_register(&sensor_barometer);
+		printk("sensor_barometer device!");
+	if (retval != 0)
+		return retval;
+#endif
+
+#endif
+
 #if defined(CONFIG_MTK_USBFSH)
 	printk("register musbfsh device\n");
 	retval = platform_device_register(&mt_usb11_dev);
@@ -1857,11 +1849,7 @@ __init int mt6589_board_init(void)
 #endif
 
 #if defined(CONFIG_MTK_TOUCHPANEL)
-#if defined(HW_HAVE_TP_THREAD)
-    retval = hw_register_tp();
-#else
     retval = platform_device_register(&mtk_tpd_dev);
-#endif
     if (retval != 0) {
         return retval;
     }
@@ -1966,6 +1954,37 @@ retval = platform_device_register(&dummychar_device);
     if (retval != 0){
         return retval;
     }
+
+    retval = platform_device_register(&actuator_dev0);
+    if (retval != 0){
+        return retval;
+    }
+	
+    retval = platform_device_register(&actuator_dev1);
+    if (retval != 0){
+        return retval;
+    }	
+
+    retval = platform_device_register(&actuator_dev2);
+    if (retval != 0){
+        return retval;
+    }
+
+	retval = platform_device_register(&actuator_dev3);
+	if (retval != 0){
+		return retval;
+	}
+
+	retval = platform_device_register(&actuator_dev4);
+	if (retval != 0){
+		return retval;
+	}
+
+	retval = platform_device_register(&actuator_dev5);
+	if (retval != 0){
+		return retval;
+	}
+	
 #endif
 //
 //=======================================================================

@@ -128,15 +128,15 @@ static void lcm_get_params(LCM_PARAMS *params)
     params->dsi.PS = LCM_PACKED_PS_24BIT_RGB888;
     params->dsi.word_count = 480 * 3;	
 
-    params->dsi.vertical_sync_active = 4;
-    params->dsi.vertical_backporch = 6;
-    params->dsi.vertical_frontporch = 6;
+    params->dsi.vertical_sync_active = 84;//--4
+    params->dsi.vertical_backporch = 28;//--6
+    params->dsi.vertical_frontporch = 28;//--6
     params->dsi.vertical_active_line = FRAME_HEIGHT; 
 
     // 20120618 modify. for ID 01,8b,80,09
-    params->dsi.horizontal_sync_active = 6;
-    params->dsi.horizontal_backporch = 30;
-    params->dsi.horizontal_frontporch = 30;
+    params->dsi.horizontal_sync_active = 6;//---6
+    params->dsi.horizontal_backporch = 33;//--30
+    params->dsi.horizontal_frontporch = 33;//--30
     params->dsi.horizontal_active_pixel = FRAME_WIDTH;
     params->dsi.horizontal_blanking_pixel = 60;
 

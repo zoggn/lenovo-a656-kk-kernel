@@ -86,10 +86,12 @@ CUSTOM_HAL_SUB_IMGSENSOR = mt9v113_mipi_yuv bf3905_mipi_yuv
 CUSTOM_HAL_SUB_LENS = dummy_lens
 
 # accelerometer sensor to detect accelerometer from x y z axis.
-CUSTOM_KERNEL_ACCELEROMETER = lis3dh_auto mma8452q_auto
+CUSTOM_KERNEL_ACCELEROMETER = bma2xx
+#lis3dh_auto mma8452q_auto
 
 # ALSPS sensor driverto detect ambint light and the object is close or far awary from device
-CUSTOM_KERNEL_ALSPS = tmd2771_HW
+CUSTOM_KERNEL_ALSPS = rpr410 
+#tmd2771_HW
 
 # The battery feature is the MUST include feature and can not be disable.This feature provides battery monitor and charging. The system can not boot up without battery.
 CUSTOM_KERNEL_BATTERY = battery
@@ -108,7 +110,7 @@ CUSTOM_KERNEL_DCT = dct
 CUSTOM_KERNEL_EEPROM = dummy_eeprom
 
 # Kernel space cameara flashlight driver. You can use this driver to choose cameara flashlight type.
-CUSTOM_KERNEL_FLASHLIGHT = constant_flashlight
+CUSTOM_KERNEL_FLASHLIGHT = dummy_flashlight
 
 # Specify HDMI external IC type.
 CUSTOM_KERNEL_HDMI = 
@@ -117,14 +119,13 @@ CUSTOM_KERNEL_HDMI =
 CUSTOM_KERNEL_HEADSET = accdet
 
 # Kernel space image sensor driver. Define  project used all image sensors .The value is combination of CUSTOM_KERNEL_MAIN_IMGSENSOR, CUSTOM_KERNEL_MAIN_BACKUP_IMGSENSOR, CUSTOM_KERNEL_SUB_IMGSENSOR, and CUSTOM_KERNEL_SUB_BACKUP_IMGSENSOR
-CUSTOM_KERNEL_IMGSENSOR = ov5647_mipi_raw mt9v113_mipi_yuv s5k4e1ga_mipi_raw bf3905_mipi_yuv
+CUSTOM_KERNEL_IMGSENSOR = 
 
 # key pad driver to report key event
 CUSTOM_KERNEL_KPD = kpd
 
 # To choose kernel LCM driver name
-CUSTOM_KERNEL_LCM = otm9608a_qhd_tianma nt35516_qhd_truly otm9605a_qhd_tianma
-
+CUSTOM_KERNEL_LCM = otm8018b_dsi_vdo_tianma
 # leds driver including green/red/blue
 CUSTOM_KERNEL_LEDS = mt65xx
 
@@ -143,7 +144,7 @@ CUSTOM_KERNEL_MAIN_BACKUP_IMGSENSOR =
 CUSTOM_KERNEL_MAIN_BACKUP_LENS = dummy_lens
 
 # Kernel space image sensor driver:Main camera (rear camera) used sensor driver.Value is used main sensor name.
-CUSTOM_KERNEL_MAIN_IMGSENSOR = ov5647_mipi_raw s5k4e1ga_mipi_raw
+CUSTOM_KERNEL_MAIN_IMGSENSOR = ov5648_mipi_raw
 
 # lens driver config for main camera
 CUSTOM_KERNEL_MAIN_LENS = fm50af
@@ -159,16 +160,16 @@ CUSTOM_KERNEL_SSW = ssw_generic
 CUSTOM_KERNEL_SUB_BACKUP_IMGSENSOR = 
 
 # lens driver config for video telephony camera (2nd solution)
-CUSTOM_KERNEL_SUB_BACKUP_LENS = dummy_lens
+CUSTOM_KERNEL_SUB_BACKUP_LENS =
 
 # Kernel space image sensor driver:Sub camera (front camera) used sensor driver.Value is used sub sensor name.
-CUSTOM_KERNEL_SUB_IMGSENSOR = mt9v113_mipi_yuv bf3905_mipi_yuv
+CUSTOM_KERNEL_SUB_IMGSENSOR =
 
 # lens driver config for video telephony camera
 CUSTOM_KERNEL_SUB_LENS = dummy_lens
 
 # touch driver  need to report correct touch axes
-CUSTOM_KERNEL_TOUCHPANEL = 
+CUSTOM_KERNEL_TOUCHPANEL = GT9XX
 
 # Configuration for USB PHY
 CUSTOM_KERNEL_USB = mt6577
@@ -177,7 +178,7 @@ CUSTOM_KERNEL_USB = mt6577
 CUSTOM_KERNEL_VIBRATOR = vibrator
 
 # To choose LK LCM driver name
-CUSTOM_LK_LCM = otm9608a_qhd_tianma nt35516_qhd_truly otm9605a_qhd_tianma
+CUSTOM_LK_LCM = otm8018b_dsi_vdo_tianma
 
 # Define which modem will be used.
 CUSTOM_MODEM = huawei89_we_kk_md1_hspa
@@ -189,7 +190,7 @@ CUSTOM_SEC_AUTH_SUPPORT = no
 CUSTOM_SEC_SIGNTOOL_SUPPORT = no
 
 # To choose uboot LCM driver name
-CUSTOM_UBOOT_LCM = otm9608a_qhd_tianma nt35516_qhd_truly otm9605a_qhd_tianma
+CUSTOM_UBOOT_LCM = otm8018b_dsi_vdo_tianma
 
 # Add these variables to define the default input method and default input method languages.
 DEFAULT_INPUT_METHOD = com.android.inputmethod.latin.LatinIME
@@ -255,10 +256,10 @@ HUAWEI_FASTBOOT_SUPPORT = yes
 KBUILD_OUTPUT_SUPPORT = yes
 
 # To set LCM resolution height size
-LCM_HEIGHT = 960
+LCM_HEIGHT = 854
 
 # To set LCM resolution width size
-LCM_WIDTH = 540
+LCM_WIDTH = 480
 
 LCM_FAKE_HEIGHT = 0
 LCM_FAKE_WIDTH = 0
@@ -351,7 +352,7 @@ MTK_AUTOIP_SUPPORT = no
 MTK_AUTORAMA_SUPPORT = yes
 
 # one load to support different accelerometer sensor
-MTK_AUTO_DETECT_ACCELEROMETER = yes
+MTK_AUTO_DETECT_ACCELEROMETER = no
 
 # one load to support different magnetometer sensor
 MTK_AUTO_DETECT_MAGNETOMETER = no

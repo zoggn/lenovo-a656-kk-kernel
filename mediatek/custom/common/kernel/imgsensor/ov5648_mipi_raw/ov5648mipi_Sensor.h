@@ -27,11 +27,10 @@
  * AT MEDIATEK'S OPTION, TO REVISE OR REPLACE THE MEDIATEK SOFTWARE AT ISSUE,
  * OR REFUND ANY SOFTWARE LICENSE FEES OR SERVICE CHARGE PAID BY RECEIVER TO
  * MEDIATEK FOR SUCH MEDIATEK SOFTWARE AT ISSUE.
- *
- * The following software/firmware and/or related documentation ("MediaTek Software")
- * have been modified by MediaTek Inc. All revisions are subject to any receiver's
- * applicable license agreements with MediaTek Inc.
  */
+
+
+
 
 /*****************************************************************************
 *  Copyright Statement:
@@ -39,7 +38,7 @@
 *  This software is protected by Copyright and the information contained
 *  herein is confidential. The software may not be copied and the information
 *  contained herein may not be used or disclosed except with the written
-*  permission of MediaTek Inc. (C) 2008
+*  permission of MediaTek Inc. (C) 2005
 *
 *  BY OPENING THIS FILE, BUYER HEREBY UNEQUIVOCALLY ACKNOWLEDGES AND AGREES
 *  THAT THE SOFTWARE/FIRMWARE AND ITS DOCUMENTATIONS ("MEDIATEK SOFTWARE")
@@ -58,7 +57,7 @@
 *  LIABILITY WITH RESPECT TO THE MEDIATEK SOFTWARE RELEASED HEREUNDER WILL BE,
 *  AT MEDIATEK'S OPTION, TO REVISE OR REPLACE THE MEDIATEK SOFTWARE AT ISSUE,
 *  OR REFUND ANY SOFTWARE LICENSE FEES OR SERVICE CHARGE PAID BY BUYER TO
-*  MEDIATEK FOR SUCH MEDIATEK SOFTWARE AT ISSUE.
+*  MEDIATEK FOR SUCH MEDIATEK SOFTWARE AT ISSUE. 
 *
 *  THE TRANSACTION CONTEMPLATED HEREUNDER SHALL BE CONSTRUED IN ACCORDANCE
 *  WITH THE LAWS OF THE STATE OF CALIFORNIA, USA, EXCLUDING ITS CONFLICT OF
@@ -67,143 +66,116 @@
 *  THE RULES OF THE INTERNATIONAL CHAMBER OF COMMERCE (ICC).
 *
 *****************************************************************************/
+
 /*****************************************************************************
  *
  * Filename:
  * ---------
- *   sensor.h
+ *   ov5648mipi_Sensor.h
  *
  * Project:
  * --------
- *   DUMA
+ *   ALPS
  *
  * Description:
  * ------------
- *   Header file of Sensor driver
+ *   CMOS sensor header file
  *
- *
- * Author:
- * -------
- *   PC Huang (MTK02204)
- *
- *============================================================================
- *             HISTORY
- * Below this line, this part is controlled by CC/CQ. DO NOT MODIFY!!
- *------------------------------------------------------------------------------
- * $Revision:$
- * $Modtime:$
- * $Log:$
- * 
- *
- *
- *------------------------------------------------------------------------------
- * Upper this line, this part is controlled by CC/CQ. DO NOT MODIFY!!
- *============================================================================
  ****************************************************************************/
+#ifndef _OV5648MIPI_SENSOR_H
+#define _OV5648MIPI_SENSOR_H
 
-/* SENSOR FULL SIZE */
-#ifndef __SENSOR_H
-#define __SENSOR_H
-
-/* Sensor QVGA size */
-#define IMAGE_SENSOR_QVGA_WIDTH					(320)
-#define IMAGE_SENSOR_QVGA_HEIGHT				(240)
-/* SENSOR VGA SIZE */
-#define BF3905MIPI_IMAGE_SENSOR_VGA_WIDTH					(640)
-#define BF3905MIPI_IMAGE_SENSOR_VGA_HEIGHT					(480)
-/* SENSOR SXGA SIZE */
-#define IMAGE_SENSOR_SXGA_WIDTH             	(1280)
-#define IMAGE_SENSOR_SXGA_HEIGHT            	(1024)
-
-/* Sensor vertical blanking & horizontal blanking, for preview and capture mode. */
-#define BF3905MIPI_DEFUALT_PREVIEW_LINE_LENGTH  0x0310  //842
-#define BF3905MIPI_DEFUALT_PREVIEW_FRAME_LENGTH 0x01FE  //518
-
-#define PREVIEW_VISIBLE_PIXELS				(0x28B - 0x04)
-#define PREVIEW_VISIBLE_LINES				(0x1EB - 0x04)
-#define CAPTURE_VISIBLE_PIXELS				(0x28B - 0x04)
-#define CAPTURE_VISIBLE_LINES				(0x1EB - 0x04)
-
-
-#define PREVIEW_H_BLANKING					(0x034A - PREVIEW_VISIBLE_PIXELS)
-#define PREVIEW_V_BLANKING					(0x0206/*0x0276*/ - PREVIEW_VISIBLE_LINES)
-#define CAPTURE_H_BLANKING					(0x06FE - CAPTURE_VISIBLE_PIXELS)
-#define CAPTURE_V_BLANKING					(0x01FB - CAPTURE_VISIBLE_LINES)
-
-
-/* Flicker factor to calculate tha minimal shutter width step for 50Hz and 60Hz  */
-#define MACRO_50HZ							(100)
-#define MACRO_60HZ							(120)
-
-#define FACTOR_50HZ							(MACRO_50HZ * 1000)
-#define FACTOR_60HZ							(MACRO_60HZ * 1000)
-
-
-//Mode state
-typedef enum BF3905_CAMCO_MODE
-{		
-  BF3905_CAM_PREVIEW=0,//Camera Preview
-  
-  BF3905_CAM_CAPTURE,//Camera Capture
-
-  BF3905_VIDEO_MPEG4,//Video Mode
-  BF3905_VIDEO_MJPEG,
-  
-  BF3905_WEBCAM_CAPTURE,//WebCam
-  
-  BF3905_VIDEO_MAX
-} BF3905_Camco_MODE;
-
-struct BF3905_sensor_struct
+#define OV5648MIPI_FACTORY_START_ADDR 0
+#define OV5648MIPI_ENGINEER_START_ADDR 10
+ 
+typedef enum OV5648MIPI_group_enum
 {
-	kal_uint16 sensor_id;
+  OV5648MIPI_PRE_GAIN = 0,
+  OV5648MIPI_CMMCLK_CURRENT,
+  OV5648MIPI_FRAME_RATE_LIMITATION,
+  OV5648MIPI_REGISTER_EDITOR,
+  OV5648MIPI_GROUP_TOTAL_NUMS
+} OV5648MIPI_FACTORY_GROUP_ENUM;
 
-	kal_uint16 Dummy_Pixels;
-	kal_uint16 Dummy_Lines;
-	kal_uint32 Preview_PClk;
+typedef enum OV5648MIPI_register_index
+{
+  OV5648MIPI_SENSOR_BASEGAIN = OV5648MIPI_FACTORY_START_ADDR,
+  OV5648MIPI_PRE_GAIN_R_INDEX,
+  OV5648MIPI_PRE_GAIN_Gr_INDEX,
+  OV5648MIPI_PRE_GAIN_Gb_INDEX,
+  OV5648MIPI_PRE_GAIN_B_INDEX,
+  OV5648MIPI_FACTORY_END_ADDR
+} OV5648MIPI_FACTORY_REGISTER_INDEX;
 
-	kal_uint32 Preview_Lines_In_Frame;  
-	kal_uint32 Capture_Lines_In_Frame;
+typedef enum OV5648MIPI_engineer_index
+{
+  OV5648MIPI_CMMCLK_CURRENT_INDEX = OV5648MIPI_ENGINEER_START_ADDR,
+  OV5648MIPI_ENGINEER_END
+} OV5648MIPI_FACTORY_ENGINEER_INDEX;
 
-	kal_uint32 Preview_Pixels_In_Line;  
-	kal_uint32 Capture_Pixels_In_Line;
-	kal_uint16 Preview_Shutter;
-	kal_uint16 Capture_Shutter;
-
-	kal_uint16 StartX;
-	kal_uint16 StartY;
-	kal_uint16 iGrabWidth;
-	kal_uint16 iGrabheight;
-
-	kal_uint16 Capture_Size_Width;
-	kal_uint16 Capture_Size_Height;
-	kal_uint32 Digital_Zoom_Factor;
-
-	kal_uint16 Max_Zoom_Factor;
-
-	kal_uint32 Min_Frame_Rate;
-	kal_uint32 Max_Frame_Rate;
-	kal_uint32 Fixed_Frame_Rate;
-	//kal_bool Night_Mode;
-	BF3905_Camco_MODE Camco_mode;
-	AE_FLICKER_MODE_T Banding;
-
-	kal_bool Night_Mode;
-};
-
-  
-#define BF3905MIPI_WRITE_ID 0xDC
-#define BF3905MIPI_READ_ID 0xdd
+typedef struct _sensor_data_struct
+{
+  SENSOR_REG_STRUCT reg[OV5648MIPI_ENGINEER_END];
+  SENSOR_REG_STRUCT cct[OV5648MIPI_FACTORY_END_ADDR];
+} sensor_data_struct;
 
 
-//export functions
-UINT32 BF3905MIPIOpen(void);
-UINT32 BF3905MIPIGetResolution(MSDK_SENSOR_RESOLUTION_INFO_STRUCT *pSensorResolution);
-UINT32 BF3905MIPIGetInfo(MSDK_SCENARIO_ID_ENUM ScenarioId, MSDK_SENSOR_INFO_STRUCT *pSensorInfo, MSDK_SENSOR_CONFIG_STRUCT *pSensorConfigData);
-UINT32 BF3905MIPIControl(MSDK_SCENARIO_ID_ENUM ScenarioId, MSDK_SENSOR_EXPOSURE_WINDOW_STRUCT *pImageWindow, MSDK_SENSOR_CONFIG_STRUCT *pSensorConfigData);
-UINT32 BF3905MIPIFeatureControl(MSDK_SENSOR_FEATURE_ENUM FeatureId, UINT8 *pFeaturePara,UINT32 *pFeatureParaLen);
-UINT32 BF3905MIPIClose(void);
+/* SENSOR PREVIEW/CAPTURE VT CLOCK */
+#define OV5648MIPI_PREVIEW_CLK                      84000000
+#define OV5648MIPI_CAPTURE_CLK                      84000000
+#define OV5648MIPI_VIDEO_CLK                        84000000
 
 
-#endif /* __SENSOR_H */
+/* Data Format */
+#define OV5648MIPI_COLOR_FORMAT                     SENSOR_OUTPUT_FORMAT_RAW_B
 
+
+#define OV5648MIPI_MIN_ANALOG_GAIN                  1   /* 1x */
+#define OV5648MIPI_MAX_ANALOG_GAIN                  32  /* 32x */
+
+
+#define OV5648MIPI_FULL_PERIOD_PIXEL_NUMS          (2752) /* 15 fps */
+#define OV5648MIPI_FULL_PERIOD_LINE_NUMS           (1974)
+
+#define OV5648MIPI_PV_PERIOD_PIXEL_NUMS            (1896) /* 30 fps */
+#define OV5648MIPI_PV_PERIOD_LINE_NUMS             (984)
+
+#define OV5648MIPI_VIDEO_PERIOD_PIXEL_NUMS         (2416) /* 30 fps */
+#define OV5648MIPI_VIDEO_PERIOD_LINE_NUMS          (1104)
+
+#define OV5648MIPI_FULL_START_X                    (4)
+#define OV5648MIPI_FULL_START_Y                    (8)
+#define OV5648MIPI_IMAGE_SENSOR_FULL_WIDTH         (2560)
+#define OV5648MIPI_IMAGE_SENSOR_FULL_HEIGHT        (1920)
+
+#define OV5648MIPI_PV_START_X                      (2)
+#define OV5648MIPI_PV_START_Y                      (2)
+#define OV5648MIPI_IMAGE_SENSOR_PV_WIDTH           (1280)
+#define OV5648MIPI_IMAGE_SENSOR_PV_HEIGHT          (960)
+
+
+/* SENSOR PIXEL/LINE NUMBERS IN ONE PERIOD */
+#define OV5648MIPI_FULL_PERIOD_PIXEL_NUMS          (2816) /* 15 fps */
+#define OV5648MIPI_FULL_PERIOD_LINE_NUMS           (1984)
+#define OV5648MIPI_PV_PERIOD_PIXEL_NUMS            (2816) /* 30 fps */
+#define OV5648MIPI_PV_PERIOD_LINE_NUMS             (992)
+
+/* SENSOR READ/WRITE ID */
+#define OV5648MIPI_WRITE_ID (0x6c)
+#define OV5648MIPI_READ_ID  (0x6d)
+
+/* FRAME RATE UNIT */
+#define OV5648MIPI_FPS(x)                          (10 * (x))
+
+
+/* EXPORT FUNCTIONS */
+UINT32 OV5648MIPIOpen(void);
+UINT32 OV5648MIPIControl(MSDK_SCENARIO_ID_ENUM ScenarioId, MSDK_SENSOR_EXPOSURE_WINDOW_STRUCT *pImageWindow, MSDK_SENSOR_CONFIG_STRUCT *pSensorConfigData);
+UINT32 OV5648MIPIFeatureControl(MSDK_SENSOR_FEATURE_ENUM FeatureId, UINT8 *pFeaturePara,UINT32 *pFeatureParaLen);
+UINT32 OV5648MIPIGetInfo(MSDK_SCENARIO_ID_ENUM ScenarioId, MSDK_SENSOR_INFO_STRUCT *pSensorInfo, MSDK_SENSOR_CONFIG_STRUCT *pSensorConfigData);
+UINT32 OV5648MIPIGetResolution(MSDK_SENSOR_RESOLUTION_INFO_STRUCT *pSensorResolution);
+UINT32 OV5648MIPIClose(void);
+
+#define Sleep(ms) mdelay(ms)
+
+#endif 

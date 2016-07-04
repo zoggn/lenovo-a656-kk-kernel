@@ -90,7 +90,8 @@ CUSTOM_KERNEL_ACCELEROMETER = bma2xx
 #lis3dh_auto mma8452q_auto
 
 # ALSPS sensor driverto detect ambint light and the object is close or far awary from device
-CUSTOM_KERNEL_ALSPS = rpr410 
+CUSTOM_KERNEL_ALSPS = 
+#rpr410 
 #tmd2771_HW
 
 # The battery feature is the MUST include feature and can not be disable.This feature provides battery monitor and charging. The system can not boot up without battery.
@@ -119,7 +120,7 @@ CUSTOM_KERNEL_HDMI =
 CUSTOM_KERNEL_HEADSET = accdet
 
 # Kernel space image sensor driver. Define  project used all image sensors .The value is combination of CUSTOM_KERNEL_MAIN_IMGSENSOR, CUSTOM_KERNEL_MAIN_BACKUP_IMGSENSOR, CUSTOM_KERNEL_SUB_IMGSENSOR, and CUSTOM_KERNEL_SUB_BACKUP_IMGSENSOR
-CUSTOM_KERNEL_IMGSENSOR = 
+CUSTOM_KERNEL_IMGSENSOR =ov5648_mipi_raw 
 
 # key pad driver to report key event
 CUSTOM_KERNEL_KPD = kpd
@@ -141,7 +142,7 @@ CUSTOM_KERNEL_MAIN_BACKUP_IMGSENSOR =
 #ov12830_mipi_raw
 
 # lens driver config for main camera (2nd solution)
-CUSTOM_KERNEL_MAIN_BACKUP_LENS = dummy_lens
+CUSTOM_KERNEL_MAIN_BACKUP_LENS = sensordrive
 
 # Kernel space image sensor driver:Main camera (rear camera) used sensor driver.Value is used main sensor name.
 CUSTOM_KERNEL_MAIN_IMGSENSOR = ov5648_mipi_raw
@@ -153,7 +154,7 @@ CUSTOM_KERNEL_MAIN_LENS = fm50af
 CUSTOM_KERNEL_RTC = rtc
 
 # For audio kernel driver's speaker customization folder definition.
-CUSTOM_KERNEL_SOUND = amp_6320pmic_spk
+CUSTOM_KERNEL_SOUND = amp_yad
 CUSTOM_KERNEL_SSW = ssw_generic
 
 # Kernel space image sensor driver:Sub camera (front camera) used backup sensor driver.Value is used sub backup sensor name.
@@ -1085,7 +1086,7 @@ MTK_PHONE_NUMBER_GEODESCRIPTION = yes
 MTK_PHONE_VOICE_RECORDING = yes
 
 # Enable voice answer function
-MTK_PHONE_VT_VOICE_ANSWER = no
+MTK_PHONE_VT_VOICE_ANSWER = yes
 MTK_PLANT3D_APP = no
 
 # Define hardware platfrom
@@ -1206,7 +1207,7 @@ MTK_SEND_RR_SUPPORT = yes
 MTK_SENSOR_SUPPORT = yes
 
 # sdcard will be a folder of /data
-MTK_SHARED_SDCARD = yes
+MTK_SHARED_SDCARD = no
 
 # Extend our Gemini feature to support daul RIL with single modem logistic.
 MTK_SHARE_MODEM_CURRENT = 2
@@ -1219,7 +1220,7 @@ MTK_SHARE_MODEM_SUPPORT = 2
 MTK_SHOW_MSENSOR_TOAST_SUPPORT = yes
 
 # A mechanism for customer to enable their own sign key.
-MTK_SIGNATURE_CUSTOMIZATION = no
+MTK_SIGNATURE_CUSTOMIZATION = yes
 MTK_SIGNMODEM_SUPPORT = yes
 
 # MTK_SIM1_SOCKET_TYPE = 1: support type 1 socket type

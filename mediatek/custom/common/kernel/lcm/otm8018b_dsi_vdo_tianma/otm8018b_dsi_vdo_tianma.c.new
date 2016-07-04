@@ -107,8 +107,8 @@ static void lcm_get_params(LCM_PARAMS *params)
     params->height = FRAME_HEIGHT;
 
     // enable tearing-free
-    //params->dbi.te_mode = LCM_DBI_TE_MODE_VSYNC_ONLY; by Pavel
-    //params->dbi.te_edge_polarity = LCM_POLARITY_RISING; by Pavel
+    params->dbi.te_mode = LCM_DBI_TE_MODE_VSYNC_ONLY;
+    params->dbi.te_edge_polarity = LCM_POLARITY_RISING;
 
     params->dsi.mode = BURST_VDO_MODE;
 	
@@ -128,19 +128,19 @@ static void lcm_get_params(LCM_PARAMS *params)
     params->dsi.PS = LCM_PACKED_PS_24BIT_RGB888;
     params->dsi.word_count = 480 * 3;	
 
-    params->dsi.vertical_sync_active = 4;
-    params->dsi.vertical_backporch = 6;
-    params->dsi.vertical_frontporch = 6;
+    params->dsi.vertical_sync_active = 84;//--4
+    params->dsi.vertical_backporch = 28;//--6
+    params->dsi.vertical_frontporch = 28;//--6
     params->dsi.vertical_active_line = FRAME_HEIGHT; 
 
     // 20120618 modify. for ID 01,8b,80,09
-    params->dsi.horizontal_sync_active = 6;
-    params->dsi.horizontal_backporch = 30;
-    params->dsi.horizontal_frontporch = 30;
+    params->dsi.horizontal_sync_active = 6;//---6
+    params->dsi.horizontal_backporch = 33;//--30
+    params->dsi.horizontal_frontporch = 33;//--30
     params->dsi.horizontal_active_pixel = FRAME_WIDTH;
     params->dsi.horizontal_blanking_pixel = 60;
 
-    //params->dsi.PLL_CLOCK = 221; //dsi clock customization: should config clock value directly by Pavel
+    params->dsi.PLL_CLOCK = 221; //dsi clock customization: should config clock value directly
 }
 
 static unsigned int lcm_compare_id(void)
@@ -299,31 +299,6 @@ static struct LCM_setting_table lcm_initialization_setting[] = {
 
 };
 
-
-
-static struct LCM_setting_table lcm_sleep_out_setting[] = {
-    // Sleep Out
-	{0x11, 1, {0x00}},
-    {REGFLAG_DELAY, 50, {}},
-
-    // Display ON
-	{0x29, 1, {0x00}},
-	{REGFLAG_DELAY, 20, {}},
-	{REGFLAG_END_OF_TABLE, 0x00, {}}
-};
-
-
-static struct LCM_setting_table lcm_deep_sleep_mode_in_setting[] = {
-	// Display off sequence
-	{0x28, 1, {0x00}},
-	{REGFLAG_DELAY, 50, {}},
-
-    // Sleep Mode On
-	{0x10, 1, {0x00}},
-	{REGFLAG_DELAY, 20, {}},
-	{REGFLAG_END_OF_TABLE, 0x00, {}}
-};
-
 static void lcm_init(void)
 {
     SET_RESET_PIN(1);
@@ -337,7 +312,7 @@ static void lcm_init(void)
 
 static void lcm_suspend(void)
 {
-    /*unsigned int data_arry[16];
+    unsigned int data_arry[16];
 
     //mipi_1data(0x28,0X00); 
     data_arry[0] = 0x00280500;
@@ -346,14 +321,13 @@ static void lcm_suspend(void)
     //mipi_1data(0x10,0X00); 
     data_arry[0] = 0x00100500;
     dsi_set_cmdq(&data_arry,1,1);
-    MDELAY(150);*/
-    push_table(lcm_deep_sleep_mode_in_setting, sizeof(lcm_deep_sleep_mode_in_setting) / sizeof(struct LCM_setting_table), 1);
+    MDELAY(150);
 }
 
 
 static void lcm_resume(void)
 {
-    /*unsigned int data_arry[16];
+    unsigned int data_arry[16];
 
     //mipi_1data(0x51,0XFF); 
     data_arry[0] = 0xFF511500;
@@ -366,15 +340,14 @@ static void lcm_resume(void)
     //mipi_1data(0x11,0X00); 
     data_arry[0] = 0x00110500;
     dsi_set_cmdq(&data_arry,1,1);
-    MDELAY(150);'*/
-    push_table(lcm_sleep_out_setting, sizeof(lcm_sleep_out_setting) / sizeof(struct LCM_setting_table), 1);
+    MDELAY(150);
 }
 
 
 #ifndef BUILD_LK
 //#define ESD_DEBUG
 #endif
-/*
+
 static unsigned int lcm_esd_check(void)
 {
     static int count = 0;
@@ -499,18 +472,17 @@ static unsigned int lcm_esd_recover(void)
 #endif
     return TRUE;
 }
-*/
 
 LCM_DRIVER otm8018b_dsi_vdo_lcsh72_lcm_drv = 
 {
-    .name           = "otm8018b_dsi_vdo_tianma",
+    .name           = "otm8018b_dsi_vdo_lcm_drv_dnj",
     .set_util_funcs = lcm_set_util_funcs,
     .compare_id     = lcm_compare_id,
     .get_params     = lcm_get_params,
     .init           = lcm_init,
     .suspend        = lcm_suspend,
     .resume         = lcm_resume,
-    //.esd_check      = lcm_esd_check,      //only for command mode, no use in video mode
-    //.esd_recover    = lcm_esd_recover,    //only for command mode, no use in video mode
+    .esd_check      = lcm_esd_check,      //only for command mode, no use in video mode
+    .esd_recover    = lcm_esd_recover,    //only for command mode, no use in video mode
 };
 
